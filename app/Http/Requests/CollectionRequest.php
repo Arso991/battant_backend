@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class CollectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,13 @@ class LoginRequest extends FormRequest
     {
         return [
             //
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:4',
+            'name' => 'required|string|max:255', //Le nom (obligatoire)
+            'description' => 'nullable|string', //La description (optionnelle)
+            'image' => 'nullable|mimes:jpg,jpeg,png|max:2048', //L'image (optionnelle)
+            'categories' => 'array', // Tableau de catégories
+            'categories.*.category_id' => 'required|exists:categories,id', // ID de la catégorie
+            'categories.*.start_date' => 'required|date|date_format:Y-m-d', // Date de début de la relation
+            'categories.*.end_date' => 'nullable|date', // Date de fin de la relation (optionnelle)
         ];
     }
 

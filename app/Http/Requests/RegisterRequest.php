@@ -40,6 +40,6 @@ class RegisterRequest extends FormRequest
             'error' => true,
             'message' => 'Validation errors',
             'errors' => $validator->errors()
-        ]));
+        ], 422));
     }
 }

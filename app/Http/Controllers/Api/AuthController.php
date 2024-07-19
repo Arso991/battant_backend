@@ -25,23 +25,25 @@ class AuthController extends Controller
             $data = $request->all();
             //créer un utilisateur
             $user = User::create([
-                'lastname' => $request->lastname,
-                'firstname' => $request->firstname,
+                'lastname' => isset($request->lastname) ? $request->lastname : null,
+                'firstname' => isset($request->firstname) ? $request->firstname : null,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => $request->role,
             ]);
 
-            $vericationUrl = URL::temporarySignedRoute('verifyEmail', Carbon::now()->addMinute(60), ['id' => $user->id, 'hash' => sha1($request->email)]);
+            $user->assignRole($request->role);
+
+            /* $vericationUrl = URL::temporarySignedRoute('verifyEmail', Carbon::now()->addMinute(60), ['id' => $user->id, 'hash' => sha1($request->email)]);
 
             //Mail::to($user['email'], $user['firstname'])->send(new VerifyEmail($vericationUrl));
 
-            Mail::send('mailConfirm', ['verificationUrl' => $vericationUrl, 'name' => $request->firstname], function ($message) use ($data) {
+            Mail::send('mailConfirm', ['verificationUrl' => $vericationUrl, 'name' => isset($data['firstname']) ? $data['firstname'] : explode('@', $data['email'])[0]], function ($message) use ($data) {
                 $config = config('mail');
                 $message->subject('Verification de votre mail')
                     ->from($config['from']['address'], $config['from']['name'])
-                    ->to($data['email'], $data['firstname']);
-            });
+                    ->to($data['email'], isset($data['firstname']) ? $data['firstname'] : explode('@', $data['email'])[0]);
+            }); */
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -98,7 +100,7 @@ class AuthController extends Controller
 
             Mail::send(
                 'mailConfirm',
-                ['verificationUrl' => $vericationUrl, 'name' => $request->firstname],
+                ['verificationUrl' => $vericationUrl, 'name' => $user->firstname],
                 function ($message) use ($user) {
                     $config = config('mail');
                     $message->subject('Verification de votre mail')

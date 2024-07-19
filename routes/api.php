@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CollectionController;
 use App\Http\Controllers\RolePermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +32,26 @@ Route::group([], function () {
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::get('/verify_mail/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['signed'])->name('verifyEmail');
-    Route::post('/email/resend', [AuthController::class, 'emailResend'])->middleware(['auth:sanctum', 'throttle:6,1'])->name('resendEmail');;
+    Route::post('/email/resend', [AuthController::class, 'emailResend'])->middleware(['auth:sanctum', 'throttle:4,1'])->name('resendEmail');;
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/social-login', [AuthController::class, 'socialLogin']);
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password/{hash}', [AuthController::class, 'resetPassword']);
     Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
+});
+
+Route::group([], function () {
+    Route::get('/collections', [CollectionController::class, 'index']);
+    Route::get('/collections/{id}', [CollectionController::class, 'show']);
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show']);
+});
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/collections', [CollectionController::class, 'store'])->middleware('can:create');
+    Route::put('/collections/{id}', [CollectionController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/collections/{id}', [CollectionController::class, 'delete'])->middleware('auth:sanctum');
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/categories/{id}', [CategoryController::class, 'delete'])->middleware('auth:sanctum');
 });
