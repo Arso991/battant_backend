@@ -34,7 +34,7 @@ class AuthController extends Controller
 
             $user->assignRole($request->role);
 
-            /* $vericationUrl = URL::temporarySignedRoute('verifyEmail', Carbon::now()->addMinute(60), ['id' => $user->id, 'hash' => sha1($request->email)]);
+            $vericationUrl = URL::temporarySignedRoute('verifyEmail', Carbon::now()->addMinute(60), ['id' => $user->id, 'hash' => sha1($request->email)]);
 
             //Mail::to($user['email'], $user['firstname'])->send(new VerifyEmail($vericationUrl));
 
@@ -43,7 +43,7 @@ class AuthController extends Controller
                 $message->subject('Verification de votre mail')
                     ->from($config['from']['address'], $config['from']['name'])
                     ->to($data['email'], isset($data['firstname']) ? $data['firstname'] : explode('@', $data['email'])[0]);
-            }); */
+            });
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
