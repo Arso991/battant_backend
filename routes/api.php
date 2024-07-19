@@ -24,14 +24,3 @@ Route::group([], function () {
     Route::post('/permissions', [RolePermissionController::class, 'createPermission']);
     Route::post('/roles', [RolePermissionController::class, 'createRole']);
 });
-
-Route::group(['prefix' => 'auth'], function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/verify_mail/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['signed'])->name('verifyEmail');
-    Route::post('/email/resend', [AuthController::class, 'emailResend'])->middleware(['auth:sanctum', 'throttle:6,1'])->name('resendEmail');;
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/social-login', [AuthController::class, 'socialLogin']);
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('/reset-password/{hash}', [AuthController::class, 'resetPassword']);
-    Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');
-});
