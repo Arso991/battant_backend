@@ -19,7 +19,7 @@ class Product extends Model
         'quantity',
         'imageUrl',
         'stock',
-        'categorie_id'
+        'category_id'
     ];
 
     // Cast JSON fields to array

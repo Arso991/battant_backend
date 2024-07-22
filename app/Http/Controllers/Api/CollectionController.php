@@ -45,7 +45,7 @@ class CollectionController extends Controller
                     );
                 }
             }
-            return response()->json(['collection' => $collection, 'data' => $collection->load('categories'), 'message' => 'Collection succesfully added'], 201);
+            return response()->json(['data' => $collection->load('categories'), 'message' => 'Collection succesfully added'], 201);
         } catch (Exception $e) {
             return response()->json($e);
         }

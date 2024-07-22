@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CollectionController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\RolePermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,15 +44,24 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group([], function () {
     Route::get('/collections', [CollectionController::class, 'index']);
     Route::get('/collections/{id}', [CollectionController::class, 'show']);
+
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
+
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/{id}', [ProductController::class, 'show']);
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/collections', [CollectionController::class, 'store'])->middleware('can:create');
-    Route::put('/collections/{id}', [CollectionController::class, 'update'])->middleware('auth:sanctum');
-    Route::delete('/collections/{id}', [CollectionController::class, 'delete'])->middleware('auth:sanctum');
+    Route::post('/collections', [CollectionController::class, 'store']);
+    Route::put('/collections/{id}', [CollectionController::class, 'update']);
+    Route::delete('/collections/{id}', [CollectionController::class, 'delete']);
+
     Route::post('/categories', [CategoryController::class, 'store']);
-    Route::put('/categories/{id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
-    Route::delete('/categories/{id}', [CategoryController::class, 'delete'])->middleware('auth:sanctum');
+    Route::put('/categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
+
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'delete']);
 });
