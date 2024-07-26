@@ -20,6 +20,7 @@ class ProductController extends Controller
             return response()->json(['data' => $products], 200);
         } catch (Exception $e) {
             //throw $th;
+            return response()->json($e);
         }
     }
 
@@ -34,6 +35,7 @@ class ProductController extends Controller
             return response()->json(['data' => $product], 200);
         } catch (Exception $e) {
             //throw $th;
+            return response()->json($e);
         }
     }
 

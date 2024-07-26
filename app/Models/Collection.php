@@ -10,7 +10,7 @@ class Collection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image', 'description'];
+    protected $fillable = ['name', 'image', 'description', 'start_date', 'end_date'];
 
     protected static function boot()
     {

@@ -21,6 +21,12 @@ return [
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
+    /* 'cookie' => env('SESSION_COOKIE', 'laravel_session'),
+
+    'session_domain' => env('SESSION_DOMAIN', null),
+
+    'same_site' => 'lax', */
+
     /*
     |--------------------------------------------------------------------------
     | Sanctum Guards
