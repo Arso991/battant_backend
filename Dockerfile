@@ -1,5 +1,5 @@
-# Utiliser une image de base avec PHP et Composer installés
-FROM php:8.1-fpm
+# Utiliser une image de base avec PHP 8.2 et Composer installés
+FROM php:8.2-fpm
 
 # Définir le répertoire de travail
 WORKDIR /var/www
@@ -28,6 +28,9 @@ COPY . .
 
 # Afficher la version de PHP et de Composer pour le diagnostic
 RUN php -v && composer -V
+
+# Afficher le contenu du répertoire pour vérifier que tous les fichiers nécessaires sont présents
+RUN ls -la /var/www
 
 # Installer les dépendances PHP avec des options de débogage
 RUN composer install --no-dev --optimize-autoloader --verbose
