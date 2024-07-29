@@ -26,11 +26,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copier les fichiers de l'application
 COPY . .
 
-# Installer les dépendances PHP
-RUN composer install --no-dev --optimize-autoloader
+# Afficher la version de PHP et de Composer pour le diagnostic
+RUN php -v && composer -V
+
+# Installer les dépendances PHP avec des options de débogage
+RUN composer install --no-dev --optimize-autoloader --verbose
 
 # Copier les permissions appropriées
 RUN chown -R www-data:www-data /var/www
+RUN chmod -R 755 /var/www
 
 # Exposer le port 9000 et démarrer PHP-FPM
 EXPOSE 9000
